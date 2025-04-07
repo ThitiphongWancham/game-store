@@ -54,4 +54,25 @@ app.MapPost("/games", (Game game) =>
     );
 }).WithParameterValidation();
 
+app.MapPut("/games/{id}", (Guid id, Game updatedGame) =>
+{
+    var existingGame = games.Find(game => game.Id == id);
+    if (existingGame is null)
+    {
+        return Results.NotFound();
+    }
+    existingGame.Name = updatedGame.Name;
+    existingGame.Genre = updatedGame.Genre;
+    existingGame.Price = updatedGame.Price;
+    existingGame.ReleaseDate = updatedGame.ReleaseDate;
+
+    return Results.NoContent();
+}).WithParameterValidation();
+
+app.MapDelete("games/{id}", (Guid id) =>
+{
+    games.RemoveAll(game => game.Id == id);
+    return Results.NoContent();
+});
+
 app.Run();
