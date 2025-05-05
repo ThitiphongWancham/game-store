@@ -19,6 +19,7 @@ public static class CreateGameEndpoint
             var newGame = new Game
             {
                 Genre = genre,
+                GenreId = genre.Id,
                 Name = game.Name,
                 Price = game.Price,
                 ReleaseDate = game.ReleaseDate,
@@ -36,7 +37,7 @@ public static class CreateGameEndpoint
                 (
                     newGame.Id,
                     newGame.Name,
-                    newGame.Genre.Id,
+                    newGame.GenreId,
                     newGame.Price,
                     newGame.ReleaseDate,
                     newGame.Description
