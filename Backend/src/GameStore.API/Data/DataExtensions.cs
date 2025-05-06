@@ -15,7 +15,7 @@ public static class DataExtensions
     {
         using var scope = app.Services.CreateScope();
         GameStoreContext dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
-        
+
         dbContext.Database.Migrate();
     }
 
@@ -24,7 +24,7 @@ public static class DataExtensions
         using var scope = app.Services.CreateScope();
         GameStoreContext dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
 
-        if (                    !dbContext.Genres.Any())
+        if (!dbContext.Genres.Any())
         {
             dbContext.Genres.AddRange(
                 new Genre { Name = "Fighting" },
@@ -32,6 +32,41 @@ public static class DataExtensions
                 new Genre { Name = "Racing" },
                 new Genre { Name = "Roleplaying" },
                 new Genre { Name = "Sports" }
+            );
+
+            dbContext.SaveChanges();
+        }
+
+        if (!dbContext.Games.Any())
+        {
+            dbContext.Games.AddRange(
+                new Game
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Street Fighter II",
+                    GenreId = dbContext.Genres.First(g => g.Name == "Fighting").Id,
+                    Price = 19.99m,
+                    ReleaseDate = new DateOnly(1992, 7, 15),
+                    Description = "Test description",
+                },
+                new Game
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Final Fantasy XIV",
+                    GenreId = dbContext.Genres.First(g => g.Name == "Roleplaying").Id,
+                    Price = 59.99m,
+                    ReleaseDate = new DateOnly(2010, 9, 30),
+                    Description = "Test description",
+                },
+                new Game
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "FIFA 23",
+                    GenreId = dbContext.Genres.First(g => g.Name == "Sports").Id,
+                    Price = 69.99m,
+                    ReleaseDate = new DateOnly(2022, 9, 27),
+                    Description = "Test description",
+                }
             );
 
             dbContext.SaveChanges();
