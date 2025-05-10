@@ -8,7 +8,7 @@ public static class DeleteGameEndpoint
 {
     public static void MapDeleteGame(this IEndpointRouteBuilder app)
     {
-        app.MapDelete("/{id}", (Guid id, GameStoreContext dbContext) =>
+        app.MapDelete("/{id:guid}", async (Guid id, GameStoreContext dbContext) =>
         {
             // This way is inefficient because you have to query data and then delete it.
             // Game? game = dbContext.Games.Find(id);
@@ -21,9 +21,9 @@ public static class DeleteGameEndpoint
 
             // Use batch-delete instead. It has no changes tracking involve. 
             // So, it automatically sends the delete request to the db. That's why you don't have to call SaveChanges()
-            dbContext.Games
+            await dbContext.Games
                 .Where(game => game.Id == id)
-                .ExecuteDelete();
+                .ExecuteDeleteAsync();
 
             return Results.NoContent();
         });

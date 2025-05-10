@@ -5,28 +5,28 @@ namespace GameStore.API.Data;
 
 public static class DataExtensions
 {
-    public static void InitializeDb(this WebApplication app)
+    public static async Task InitializeDb(this WebApplication app)
     {
-        MigrateDb(app);
-        SeedDb(app);
+        await MigrateDbAsync(app);
+        await SeedDbAsync(app);
     }
 
-    private static void MigrateDb(WebApplication app)
+    private static async Task MigrateDbAsync(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        GameStoreContext dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
 
-        dbContext.Database.Migrate();
+        await dbContext.Database.MigrateAsync();
     }
 
-    private static void SeedDb(WebApplication app)
+    private static async Task SeedDbAsync(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        GameStoreContext dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
 
         if (!dbContext.Genres.Any())
         {
-            dbContext.Genres.AddRange(
+            await dbContext.Genres.AddRangeAsync(
                 new Genre { Name = "Fighting" },
                 new Genre { Name = "Kids and Family" },
                 new Genre { Name = "Racing" },
@@ -34,12 +34,12 @@ public static class DataExtensions
                 new Genre { Name = "Sports" }
             );
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
         if (!dbContext.Games.Any())
         {
-            dbContext.Games.AddRange(
+            await dbContext.Games.AddRangeAsync(
                 new Game
                 {
                     Id = Guid.NewGuid(),
@@ -69,7 +69,7 @@ public static class DataExtensions
                 }
             );
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
     }
 }
