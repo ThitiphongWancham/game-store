@@ -304,4 +304,6 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
-GameStore.http 
+GameStore.http
+
+GameStore.db*
