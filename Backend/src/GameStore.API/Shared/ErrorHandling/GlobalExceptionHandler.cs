@@ -15,7 +15,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
 
         await Results.Problem(
             title: "An error occured while processing your request.",
-            statusCode: StatusCodes.Status400BadRequest,
+            statusCode: StatusCodes.Status500InternalServerError,
             extensions: new Dictionary<string, object?>
             {
                 { "traceId", traceId.ToString() },
