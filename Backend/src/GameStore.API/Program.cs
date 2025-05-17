@@ -1,10 +1,13 @@
 using GameStore.API.Data;
 using GameStore.API.Features.Games;
 using GameStore.API.Features.Genres;
+using GameStore.API.Shared.ErrorHandling;
 using GameStore.API.Shared.Timing;
 using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddProblemDetails().AddExceptionHandler<GlobalExceptionHandler>();
 
 var connString = builder.Configuration.GetConnectionString("GameStore");
 
@@ -29,6 +32,14 @@ app.MapGenres();
 
 // Built-in middleware
 app.UseHttpLogging();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler();
+}
+
+app.UseStatusCodePages();
+
 // Custom middleware
 app.UseMiddleware<RequestTimingMiddleware>();
 

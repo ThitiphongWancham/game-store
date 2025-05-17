@@ -1,5 +1,4 @@
 using GameStore.API.Data;
-using GameStore.API.Models;
 
 namespace GameStore.API.Features.Games.UpdateGame;
 
@@ -7,24 +6,25 @@ public static class UpdateGameEndpoint
 {
     public static void MapUpdateGame(this IEndpointRouteBuilder app)
     {
-        app.MapPut("/{id:guid}", async (Guid id, UpdateGameDto gameDto, GameStoreContext dbContext) =>
-        {
-            var existingGame = await dbContext.Games.FindAsync(id);
-
-            if (existingGame is null)
+        app.MapPut("/{id:guid}",
+            async (Guid id, UpdateGameDto gameDto, GameStoreContext dbContext, ILogger<Program> logger) =>
             {
-                return Results.NotFound();
-            }
+                var existingGame = await dbContext.Games.FindAsync(id);
 
-            existingGame.Name = gameDto.Name;
-            existingGame.GenreId = gameDto.GenreId;
-            existingGame.Price = gameDto.Price;
-            existingGame.ReleaseDate = gameDto.ReleaseDate;
-            existingGame.Description = gameDto.Description;
+                if (existingGame is null)
+                {
+                    return Results.NotFound();
+                }
 
-            await dbContext.SaveChangesAsync();
+                existingGame.Name = gameDto.Name;
+                existingGame.GenreId = gameDto.GenreId;
+                existingGame.Price = gameDto.Price;
+                existingGame.ReleaseDate = gameDto.ReleaseDate;
+                existingGame.Description = gameDto.Description;
 
-            return Results.NoContent();
-        }).WithParameterValidation();
+                await dbContext.SaveChangesAsync();
+
+                return Results.NoContent();
+            }).WithParameterValidation();
     }
 }
