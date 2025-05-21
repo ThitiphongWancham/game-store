@@ -7,3 +7,9 @@ public record GameSummaryDto(
     decimal Price,
     DateOnly ReleaseDate
 );
+
+// Input DTO (parameter)
+public record GetGamesDto(int PageNumber = 1, int PageSize = 5, string? Name = null);
+
+// Response DTO
+public record GamesPageDto(int TotalPages, IEnumerable<GameSummaryDto> Data);
