@@ -23,9 +23,10 @@ builder.Services.AddHttpLogging(options =>
     options.CombineLogs = true;
 });
 
-var app = builder.Build();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-app.MapGet("/", () => "Hello World!, Welcome to GameStore!");
+var app = builder.Build();
 
 app.MapGames();
 app.MapGenres();
@@ -33,7 +34,11 @@ app.MapGenres();
 // Built-in middleware
 app.UseHttpLogging();
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+}
+else
 {
     app.UseExceptionHandler();
 }
