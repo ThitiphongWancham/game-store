@@ -37,6 +37,9 @@ builder.Services.AddHttpContextAccessor().AddSingleton<FileUploader>();
 // Build an application
 var app = builder.Build();
 
+// Serve files from wwwroot folder by default
+app.UseStaticFiles();
+
 // Map endpoints with our services
 app.MapGames();
 app.MapGenres();
