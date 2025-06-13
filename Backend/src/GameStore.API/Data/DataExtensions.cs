@@ -40,6 +40,8 @@ public static class DataExtensions
 
         if (!dbContext.Games.Any())
         {
+            const string defaultImageUri = "https://placehold.co/100";
+            
             await dbContext.Games.AddRangeAsync(
                 new Game
                 {
@@ -49,6 +51,7 @@ public static class DataExtensions
                     Price = 19.99m,
                     ReleaseDate = new DateOnly(1992, 7, 15),
                     Description = "Test description",
+                    ImageUri = defaultImageUri,
                 },
                 new Game
                 {
@@ -58,6 +61,7 @@ public static class DataExtensions
                     Price = 59.99m,
                     ReleaseDate = new DateOnly(2010, 9, 30),
                     Description = "Test description",
+                    ImageUri = defaultImageUri,
                 },
                 new Game
                 {
@@ -67,6 +71,7 @@ public static class DataExtensions
                     Price = 69.99m,
                     ReleaseDate = new DateOnly(2022, 9, 27),
                     Description = "Test description",
+                    ImageUri = defaultImageUri,
                 }
             );
 

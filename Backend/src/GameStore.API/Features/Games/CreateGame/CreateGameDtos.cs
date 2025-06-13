@@ -4,19 +4,19 @@ using System.ComponentModel.DataAnnotations;
 namespace GameStore.API.Features.Games.CreateGame;
 
 public record CreateGameDto(
-    [Required][StringLength(50)]
-    string Name,
+    [Required] [StringLength(50)] string Name,
 
     Guid GenreId,
 
-    [Range(1, 100)]
-    decimal Price,
+    [Range(1, 100)] decimal Price,
 
     DateOnly ReleaseDate,
 
-    [Required][StringLength(500)]
-    string Description
-);
+    [Required] [StringLength(500)] string Description
+)
+{
+    public IFormFile? ImageFile { get; set; }
+}
 
 public record GameDetailsDto(
     Guid Id,
@@ -24,5 +24,6 @@ public record GameDetailsDto(
     Guid GenreId,
     decimal Price,
     DateOnly ReleaseDate,
-    string Description
+    string Description,
+    string ImageUri
 );
